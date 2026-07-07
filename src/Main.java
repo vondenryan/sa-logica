@@ -40,15 +40,15 @@ public class Main {
                         break;
                     case 2:
                         //Redirecionando código para service
-                        manutencaoService.menu();
+                        // manutencaoService.menu();
                         break;
                     case 3:
                         //Redirecionando código para service
-                        tecnicoService.menu();
+                        // tecnicoService.menu();
                         break;
                     case 4:
                         //Redirecionando código para service
-                        relatorioService.menu();
+                        // relatorioService.menu();
                         break;
                     case 0:
                         System.out.println("\nSaindo...");

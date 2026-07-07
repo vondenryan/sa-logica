@@ -27,8 +27,8 @@ public class ManutencaoRepository {
         return false;
     }
 
-    public boolean delete(Manutencao manutencao) {
-        return manutencoes.remove(manutencao);
+    public boolean delete(String codigo) {
+        return manutencoes.removeIf(m -> m.getCodigo().equals(codigo));
     }
 
     public Manutencao buscarPorCodigo(String codigo) {

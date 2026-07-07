@@ -9,121 +9,52 @@ import models.Equipamento;
 import repository.EquipamentoRepository;
 
 public class EquipamentoService {
+    private final ManutencaoService manutencaoService;
     private final EquipamentoRepository repository;
-    
-    public EquipamentoService(EquipamentoRepository repository) {
+
+    public EquipamentoService(ManutencaoService manutencaoService, EquipamentoRepository repository) {
+        this.manutencaoService = manutencaoService;
         this.repository = repository;
     }
 
-    public void create(Equipamento equipamento) {
-        try {
-            if(equipamento.getCategoria().isEmpty()) {
-                throw new ObjetoIncompletoException("Erro: categoria vazia!");
-            }
-            if(equipamento.getDataInstalacao().isEmpty()) {
-                throw new ObjetoIncompletoException("Erro: data instalação vazia!");
-            }
-            if(equipamento.getFabricante().isEmpty()) {
-                throw new ObjetoIncompletoException("Erro: fabricante vazio!");
-            }
-            if(equipamento.getModelo().isEmpty()) {
-                throw new ObjetoIncompletoException("Erro: modelo vazio!");
-            }
-            if(equipamento.getNome().isEmpty()) {
-                throw new ObjetoIncompletoException("Erro: nome vazio!");
-            }
-            if(equipamento.getSetor().isEmpty()) {
-                throw new ObjetoIncompletoException("Erro: setor vazio!");
-            }
-            if(equipamento.getStatus().isEmpty()) {
-                throw new ObjetoIncompletoException("Erro: status vazio!");
-            }
-            if(equipamento.getCodigo().isEmpty()) {
-                throw new ObjetoIncompletoException("Erro: codigo vazio!");
-            }
-
-            repository.create(equipamento);
-        } catch(ObjetoIncompletoException e) {
-            System.out.println("\n" + e.getMessage());
-        }
+    public void create(Equipamento equipamento) throws ObjetoIncompletoException {
+        validarEquipamento(equipamento);
+        repository.create(equipamento);
     }
 
-    public void update(Equipamento equipamento) {
-        try {
-            if(equipamento.getCategoria().isEmpty()) {
-                throw new ObjetoIncompletoException("Erro: categoria vazia!");
-            }
-            if(equipamento.getDataInstalacao().isEmpty()) {
-                throw new ObjetoIncompletoException("Erro: data instalação vazia!");
-            }
-            if(equipamento.getFabricante().isEmpty()) {
-                throw new ObjetoIncompletoException("Erro: fabricante vazio!");
-            }
-            if(equipamento.getModelo().isEmpty()) {
-                throw new ObjetoIncompletoException("Erro: modelo vazio!");
-            }
-            if(equipamento.getNome().isEmpty()) {
-                throw new ObjetoIncompletoException("Erro: nome vazio!");
-            }
-            if(equipamento.getSetor().isEmpty()) {
-                throw new ObjetoIncompletoException("Erro: setor vazio!");
-            }
-            if(equipamento.getStatus().isEmpty()) {
-                throw new ObjetoIncompletoException("Erro: status vazio!");
-            }
-            if(equipamento.getCodigo().isEmpty()) {
-                throw new ObjetoIncompletoException("Erro: codigo vazio!");
-            }
-
-            repository.update(equipamento);
-        } catch(ObjetoIncompletoException e) {
-            System.out.println("\n" + e.getMessage());
-        }
+    public void update(Equipamento equipamento) throws ObjetoIncompletoException, CodigoInvalidoException {
+        if(repository.buscarPorCodigo(equipamento.getCodigo()) == null) { throw new CodigoInvalidoException("Erro: código inválido!"); }
+        validarEquipamento(equipamento);
+        repository.update(equipamento);
     }
 
-    public void delete(String codigo) {
-        try {
-            if(repository.listarTodos().isEmpty()) {
-                throw new ListaVaziaException("Erro: lista vazia!");
-            }
-            if(repository.buscarPorCodigo(codigo) == null) {
-                throw new CodigoInvalidoException("Erro: código inválido!");
-            }
-            //verificar manutenção em aberto
-
-            repository.delete(codigo);
-        } catch(Exception e) {
-            System.out.println("\n" + e.getMessage());
-        }
+    public void delete(String codigo) throws ListaVaziaException, CodigoInvalidoException {
+        if(repository.listarTodos().isEmpty()) { throw new ListaVaziaException("Erro: lista vazia!"); }
+        //verificar manutenção em aberto
+        boolean result = repository.delete(codigo);
+        if(!result) { throw new CodigoInvalidoException("Erro: código inválido!"); }
     }
 
-    public Equipamento buscarPorCodigo(String codigo) {
-        try {
-            Equipamento result = repository.buscarPorCodigo(codigo);
-
-            if(result == null) {
-                throw new CodigoInvalidoException("Erro: código inválido!");
-            }
-
-            return result;
-        } catch(CodigoInvalidoException e) {
-            System.out.println("\n" + e.getMessage());
-            return null;
-        }
+    public Equipamento buscarPorCodigo(String codigo) throws CodigoInvalidoException {
+        Equipamento result = repository.buscarPorCodigo(codigo);
+        if(result == null) { throw new CodigoInvalidoException("Erro: código inválido!"); }
+        return result;
     }
 
-    public ArrayList<Equipamento> listarTodos() {
-        try {
-            ArrayList<Equipamento> result = repository.listarTodos();
-    
-            if(result.isEmpty()) {
-                throw new ListaVaziaException("Erro: lista vazia!");
-            }
+    public ArrayList<Equipamento> listarTodos() throws ListaVaziaException {
+        ArrayList<Equipamento> result = repository.listarTodos();
+        if(result.isEmpty()) { throw new ListaVaziaException("Erro: lista vazia!"); }
+        return result;
+    }
 
-            return result;
-        } catch(ListaVaziaException e) {
-            System.out.println("\n" + e.getMessage());
-            return null;
-        }
+    private void validarEquipamento(Equipamento e) throws ObjetoIncompletoException {
+        if(e.getCodigo().isEmpty() || e.getCodigo() == null) { throw new ObjetoIncompletoException("Erro: codigo vazio!"); }
+        if(e.getCategoria().isEmpty() || e.getCategoria() == null) { throw new ObjetoIncompletoException("Erro: categoria vazia!"); }
+        if(e.getDataInstalacao().isEmpty() || e.getDataInstalacao() == null) { throw new ObjetoIncompletoException("Erro: data instalação vazia!"); }
+        if(e.getFabricante().isEmpty() || e.getFabricante() == null) { throw new ObjetoIncompletoException("Erro: fabricante vazio!"); }
+        if(e.getModelo().isEmpty() || e.getModelo() == null) { throw new ObjetoIncompletoException("Erro: modelo vazio!"); }
+        if(e.getNome().isEmpty() || e.getNome() == null) { throw new ObjetoIncompletoException("Erro: nome vazio!"); }
+        if(e.getSetor().isEmpty() || e.getSetor() == null) { throw new ObjetoIncompletoException("Erro: setor vazio!"); }
+        if(e.getStatus().isEmpty() || e.getStatus() == null) { throw new ObjetoIncompletoException("Erro: status vazio!"); }
     }
 }

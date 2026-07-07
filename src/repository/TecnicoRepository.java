@@ -24,8 +24,14 @@ public class TecnicoRepository {
         return false;
     }
 
-    public boolean delete(Tecnico tecnico) {
-        return tecnicos.remove(tecnico);
+    public boolean delete(String codigo) {
+        for(Tecnico t : tecnicos) {
+            if(t.getCodigo().equals(codigo)) {
+                tecnicos.remove(t);
+                return true;
+            }
+        }
+        return false;
     }
 
     public Tecnico buscarPorCodigo(String codigo) {
