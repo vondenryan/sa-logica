@@ -1,3 +1,4 @@
+import controllers.MenuController;
 import repository.EquipamentoRepository;
 import repository.ManutencaoRepository;
 import repository.TecnicoRepository;
@@ -14,5 +15,8 @@ public class Main {
         EquipamentoService equipamentoService = new EquipamentoService(equipamentoRepository);
         ManutencaoService manutencaoService = new ManutencaoService(manutencaoRepository);
         TecnicoService tecnicoService = new TecnicoService(tecnicoRepository);
+        
+        MenuController menu = new MenuController(tecnicoService, manutencaoService, equipamentoService);
+        menu.startMenu();
     }
 }

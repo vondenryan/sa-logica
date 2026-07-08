@@ -15,6 +15,15 @@ public class Tecnico {
         this.telefone = telefone;
     }
 
+    @Override
+    public String toString() {
+        return "Código: " + codigo 
+            + "\nNome: " + nome
+            + "\nMatrícula: " + matricula
+            + "\nSetor: " + setor
+            + "\nTelefone: " + telefone;
+    }
+
     public String getCodigo() {
         return codigo;
     }
