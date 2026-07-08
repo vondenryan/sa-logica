@@ -20,6 +20,7 @@ public class ManutencaoService {
     }
 
     public void create(Manutencao manutencao) throws ObjetoIncompletoException, TecnicoInvalidoException, EquipamentoInvalidoException, CodigoInvalidoException {
+        //validar codigo unico
         validarManutencao(manutencao);
         repository.create(manutencao);
     }
@@ -43,13 +44,17 @@ public class ManutencaoService {
 
         //validacao regras de negocio
         if(m.getCodigo().isEmpty() || m.getCodigo() == null) { throw new ObjetoIncompletoException("Erro: código inválido!"); }
-        if(m.getDataAbertura().isEmpty() || m.getDataAbertura() == null) { throw new ObjetoIncompletoException("Erro: data abertura vazia!"); }
+        if(m.getDataAbertura() == null) { throw new ObjetoIncompletoException("Erro: data abertura vazia!"); }
         if(m.getTipoManutencao().isEmpty() || m.getTipoManutencao() == null) { throw new ObjetoIncompletoException("Erro: tipo manutenção vazio!"); }
         if(m.getDescricaoProblema().isEmpty() || m.getDescricaoProblema() == null) { throw new ObjetoIncompletoException("Erro: descrição problema vazio!"); }
         if(m.getSituacao().isEmpty() || m.getSituacao() == null) { throw new ObjetoIncompletoException("Erro: situação vazia!"); }
 
-        if()
+        if(m.getSituacao().equals("Finalizada")) {
+            if(m.getDataEncerramento() == null) { throw new ObjetoIncompletoException("Erro: data encerramento vazia!"); }
+        }
+    }
 
-        if(m.getDataEncerramento().isEmpty() || m.getDataEncerramento() == null) { throw new ObjetoIncompletoException("Erro: data encerramento vazia!"); }
+    public void validarUnicidade(Manutencao m) {
+
     }
 }

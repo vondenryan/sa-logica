@@ -4,21 +4,23 @@ import java.util.ArrayList;
 
 import exceptions.CodigoInvalidoException;
 import exceptions.ListaVaziaException;
+import exceptions.ManutencaoAbertaException;
 import exceptions.ObjetoIncompletoException;
 import models.Equipamento;
 import repository.EquipamentoRepository;
+import repository.ManutencaoRepository;
 
 public class EquipamentoService {
-    private final ManutencaoService manutencaoService;
+    private final ManutencaoRepository manRep = new ManutencaoRepository();
     private final EquipamentoRepository repository;
 
-    public EquipamentoService(ManutencaoService manutencaoService, EquipamentoRepository repository) {
-        this.manutencaoService = manutencaoService;
+    public EquipamentoService(EquipamentoRepository repository) {
         this.repository = repository;
     }
 
-    public void create(Equipamento equipamento) throws ObjetoIncompletoException {
+    public void create(Equipamento equipamento) throws ObjetoIncompletoException, CodigoInvalidoException {
         validarEquipamento(equipamento);
+        validarUnicidade(equipamento);
         repository.create(equipamento);
     }
 
@@ -28,9 +30,9 @@ public class EquipamentoService {
         repository.update(equipamento);
     }
 
-    public void delete(String codigo) throws ListaVaziaException, CodigoInvalidoException {
+    public void delete(String codigo) throws ListaVaziaException, CodigoInvalidoException, ManutencaoAbertaException {
         if(repository.listarTodos().isEmpty()) { throw new ListaVaziaException("Erro: lista vazia!"); }
-        //verificar manutenção em aberto
+        if(!manRep.validarExclusaoEquipamento(repository.buscarPorCodigo(codigo))) { throw new ManutencaoAbertaException("Erro: equipamento relacionado a manutenção aberta!"); }
         boolean result = repository.delete(codigo);
         if(!result) { throw new CodigoInvalidoException("Erro: código inválido!"); }
     }
@@ -56,5 +58,11 @@ public class EquipamentoService {
         if(e.getNome().isEmpty() || e.getNome() == null) { throw new ObjetoIncompletoException("Erro: nome vazio!"); }
         if(e.getSetor().isEmpty() || e.getSetor() == null) { throw new ObjetoIncompletoException("Erro: setor vazio!"); }
         if(e.getStatus().isEmpty() || e.getStatus() == null) { throw new ObjetoIncompletoException("Erro: status vazio!"); }
+    }
+
+    private void validarUnicidade(Equipamento e) throws CodigoInvalidoException {
+        for(Equipamento equipamento : repository.listarTodos()) {
+            if(e.getCodigo().equals(equipamento.getCodigo())) { throw new CodigoInvalidoException("Erro: código duplicado!"); }
+        }
     }
 }

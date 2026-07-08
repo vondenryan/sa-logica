@@ -4,22 +4,24 @@ import java.util.ArrayList;
 
 import exceptions.CodigoInvalidoException;
 import exceptions.ListaVaziaException;
+import exceptions.ManutencaoAbertaException;
+import exceptions.MatriculaInvalidaException;
 import exceptions.ObjetoIncompletoException;
 import models.Tecnico;
+import repository.ManutencaoRepository;
 import repository.TecnicoRepository;
 
 public class TecnicoService {
-    private final ManutencaoService manutencaoService;
+    private final ManutencaoRepository manRep = new ManutencaoRepository();
     private final TecnicoRepository repository;
 
-    public TecnicoService(ManutencaoService manutencaoService, TecnicoRepository repository) {
-        this.manutencaoService = manutencaoService;
+    public TecnicoService(TecnicoRepository repository) {
         this.repository = repository;
     }
 
-    public void create(Tecnico tecnico) throws ObjetoIncompletoException {
-        //todo validar matricula e codigo unico
+    public void create(Tecnico tecnico) throws ObjetoIncompletoException, MatriculaInvalidaException, CodigoInvalidoException {
         validarTecnico(tecnico);
+        validarUnicidade(tecnico);
         repository.create(tecnico);
     }
 
@@ -29,9 +31,9 @@ public class TecnicoService {
         repository.update(tecnico);
     }
 
-    public void delete(String codigo) throws ListaVaziaException, CodigoInvalidoException {
+    public void delete(String codigo) throws ListaVaziaException, CodigoInvalidoException, ManutencaoAbertaException {
         if(repository.listarTodos().isEmpty()) { throw new ListaVaziaException("Erro: lista vazia!"); }
-        //todo veriicar manutenção em aberto
+        if(!manRep.validarExclusaoTecnico(repository.buscarPorCodigo(codigo))) { throw new ManutencaoAbertaException("Erro: técnico relacionado a manutenção aberta!"); }
         boolean result = repository.delete(codigo);
         if(!result) { throw new CodigoInvalidoException("Erro: código inválido!"); }
     }
@@ -54,5 +56,12 @@ public class TecnicoService {
         if(t.getMatricula().isEmpty() || t.getMatricula() == null) { throw new ObjetoIncompletoException("Erro: matrícula vazia!"); }
         if(t.getSetor().isEmpty() || t.getSetor() == null) { throw new ObjetoIncompletoException("Erro: setor vazio!"); }
         if(t.getTelefone().isEmpty() || t.getTelefone() == null) { throw new ObjetoIncompletoException("Erro: telefone vazio!"); }
+    }
+
+    private void validarUnicidade(Tecnico t) throws CodigoInvalidoException, MatriculaInvalidaException {
+        for(Tecnico tecnico : repository.listarTodos()) {
+            if(t.getCodigo().equals(tecnico.getCodigo())) { throw new CodigoInvalidoException("Erro: código duplicado!"); }
+            if(t.getMatricula().equals(tecnico.getMatricula())) { throw new MatriculaInvalidaException("Erro: matrícula duplicada!"); }
+        }
     }
 }

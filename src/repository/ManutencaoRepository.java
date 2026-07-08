@@ -2,7 +2,9 @@ package repository;
 
 import java.util.ArrayList;
 
+import models.Equipamento;
 import models.Manutencao;
+import models.Tecnico;
 
 public class ManutencaoRepository {
     private final ArrayList<Manutencao> manutencoes = new ArrayList<>();
@@ -42,5 +44,33 @@ public class ManutencaoRepository {
 
     public ArrayList<Manutencao> listarTodos() {
         return new ArrayList<>(manutencoes);
+    }
+
+    public boolean validarExclusaoEquipamento(Equipamento e) {
+        for(Manutencao m : manutencoes) {
+            if(m.getEquipamentoRelacionado().getCodigo() != e.getCodigo()) {
+                continue;
+            }
+
+            String situacao = m.getSituacao();
+            if("Aberta".equals(situacao) || "Em andamento".equals(situacao)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean validarExclusaoTecnico(Tecnico t) {
+        for(Manutencao m : manutencoes) {
+            if(m.getTecnicoResponsavel().getCodigo() != t.getCodigo()) {
+                continue;
+            }
+
+            String situacao = m.getSituacao();
+            if("Aberta".equals(situacao) || "Em andamento".equals(situacao)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

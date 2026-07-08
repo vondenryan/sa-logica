@@ -1,11 +1,13 @@
 package models;
 
+import java.time.LocalDateTime;
+
 public class Manutencao {
     private String codigo;
     private Equipamento equipamentoRelacionado;
     private Tecnico tecnicoResponsavel;
-    private String dataAbertura;
-    private String dataEncerramento;
+    private LocalDateTime dataAbertura;
+    private LocalDateTime dataEncerramento;
     private String tipoManutencao; //Preventiva / Corretiva
     private String descricaoProblema;
     private String situacao; // Aberta / Em Andamento / Finalizada
@@ -33,19 +35,19 @@ public void setTecnicoResponsavel(Tecnico tecnicoResponsavel) {
     this.tecnicoResponsavel = tecnicoResponsavel;
 }
 
-public String getDataAbertura() {
+public LocalDateTime getDataAbertura() {
     return dataAbertura;
 }
 
-public void setDataAbertura(String dataAbertura) {
+public void setDataAbertura(LocalDateTime dataAbertura) {
     this.dataAbertura = dataAbertura;
 }
 
-public String getDataEncerramento() {
+public LocalDateTime getDataEncerramento() {
     return dataEncerramento;
 }
 
-public void setDataEncerramento(String dataEncerramento) {
+public void setDataEncerramento(LocalDateTime dataEncerramento) {
     this.dataEncerramento = dataEncerramento;
 }
 
