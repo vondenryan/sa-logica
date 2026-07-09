@@ -1,5 +1,7 @@
 package services;
 
+import java.util.ArrayList;
+
 import exceptions.CodigoInvalidoException;
 import exceptions.EquipamentoInvalidoException;
 import exceptions.ListaVaziaException;
@@ -37,6 +39,18 @@ public class ManutencaoService {
         if(!result) { throw new CodigoInvalidoException("Erro: código inválido!"); }
     }
 
+    public Manutencao buscarPorCodigo(String codigo) throws CodigoInvalidoException {
+        Manutencao result = repository.buscarPorCodigo(codigo);
+        if(result == null) { throw new CodigoInvalidoException("Erro: código inválido!"); }
+        return result;
+    }
+
+    public ArrayList<Manutencao> listarTodos() throws ListaVaziaException {
+        ArrayList<Manutencao> result = repository.listarTodos();
+        if(result.isEmpty()) { throw new ListaVaziaException("Erro: lista vazia!"); }
+        return result;
+    }
+
     private void validarManutencao(Manutencao m) throws ObjetoIncompletoException, TecnicoInvalidoException, EquipamentoInvalidoException, CodigoInvalidoException {
         //validacao de existencia tecnico e equipamento
         if(tecnicoRepository.buscarPorCodigo(m.getTecnicoResponsavel().getCodigo()) == null) { throw new TecnicoInvalidoException("Erro: técnico inválido!"); }
@@ -54,7 +68,9 @@ public class ManutencaoService {
         }
     }
 
-    public void validarUnicidade(Manutencao m) {
-
+    public void validarUnicidade(Manutencao m) throws CodigoInvalidoException {
+        for(Manutencao manutencao : repository.listarTodos()) {
+            if(m.getCodigo().endsWith(manutencao.getCodigo())) { throw new CodigoInvalidoException("Erro: código duplicado!"); }
+        }
     }
 }

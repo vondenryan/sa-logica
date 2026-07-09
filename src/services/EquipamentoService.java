@@ -52,7 +52,7 @@ public class EquipamentoService {
     private void validarEquipamento(Equipamento e) throws ObjetoIncompletoException {
         if(e.getCodigo().isEmpty() || e.getCodigo() == null) { throw new ObjetoIncompletoException("Erro: codigo vazio!"); }
         if(e.getCategoria().isEmpty() || e.getCategoria() == null) { throw new ObjetoIncompletoException("Erro: categoria vazia!"); }
-        if(e.getDataInstalacao().isEmpty() || e.getDataInstalacao() == null) { throw new ObjetoIncompletoException("Erro: data instalação vazia!"); }
+        if(e.getDataInstalacao() == null) { throw new ObjetoIncompletoException("Erro: data instalação vazia!"); }
         if(e.getFabricante().isEmpty() || e.getFabricante() == null) { throw new ObjetoIncompletoException("Erro: fabricante vazio!"); }
         if(e.getModelo().isEmpty() || e.getModelo() == null) { throw new ObjetoIncompletoException("Erro: modelo vazio!"); }
         if(e.getNome().isEmpty() || e.getNome() == null) { throw new ObjetoIncompletoException("Erro: nome vazio!"); }

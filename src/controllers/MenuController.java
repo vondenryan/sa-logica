@@ -21,7 +21,7 @@ public class MenuController {
             EquipamentoService equipamentoService) {
         this.tecnicoController = new TecnicoController(tecnicoService);
         this.equipamentoController = new EquipamentoController(equipamentoService);
-        this.manutencaoController = new ManutencaoController(manutencaoService);
+        this.manutencaoController = new ManutencaoController(manutencaoService, equipamentoService, tecnicoService);
     }
 
     public void startMenu() {

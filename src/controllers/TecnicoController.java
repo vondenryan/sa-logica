@@ -1,6 +1,5 @@
 package controllers;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -32,7 +31,7 @@ public class TecnicoController {
                 int opcao = input.nextInt();
                 input.nextLine();
 
-                switch (opcao) {
+                switch(opcao) {
                     case 1:
                         //cadastrar
                         service.create(cadastrarTecnico());
@@ -63,8 +62,7 @@ public class TecnicoController {
                         break;
                     case 5:
                         //listar todos
-                        ArrayList<Tecnico> tecnicos = service.listarTodos();
-                        for(Tecnico t : tecnicos) {
+                        for(Tecnico t : service.listarTodos()) {
                             System.out.println("\n" + t);
                         }
                         break;

@@ -11,7 +11,29 @@ public class Manutencao {
     private String tipoManutencao; //Preventiva / Corretiva
     private String descricaoProblema;
     private String situacao; // Aberta / Em Andamento / Finalizada
-    
+
+    public Manutencao(String codigo, Equipamento equipamentoRelacionado, Tecnico tecnicoResponsavel,
+            LocalDateTime dataAbertura, String tipoManutencao, String descricaoProblema, String situacao) {
+        this.codigo = codigo;
+        this.equipamentoRelacionado = equipamentoRelacionado;
+        this.tecnicoResponsavel = tecnicoResponsavel;
+        this.dataAbertura = dataAbertura;
+        this.tipoManutencao = tipoManutencao;
+        this.descricaoProblema = descricaoProblema;
+        this.situacao = situacao;
+    }
+
+    public String toString() {
+        return "Código: " + codigo
+        + "\nCod. Equipamento: " + equipamentoRelacionado.getCodigo()
+        + "\nCod. Técnico: " + tecnicoResponsavel.getCodigo()
+        + "\nData Abertura: " + dataAbertura.toString()
+        + "\nData Encerramento: " + (dataEncerramento == null ? "Não finalizada" : dataEncerramento.toString())
+        + "\nTipo Manutenção: " + tipoManutencao
+        + "\nDescrição: " + descricaoProblema
+        + "\nSituação: " + situacao;
+    }
+
     public String getCodigo() {
         return codigo;
     }
@@ -21,57 +43,58 @@ public class Manutencao {
     }
     
     public Equipamento getEquipamentoRelacionado() {
-    return equipamentoRelacionado;
-}
-public void setEquipamentoRelacionado(Equipamento equipamentoRelacionado) {
-    this.equipamentoRelacionado = equipamentoRelacionado;
-}
+        return equipamentoRelacionado;
+    }
 
-public Tecnico getTecnicoResponsavel() {
-    return tecnicoResponsavel;
-}
+    public void setEquipamentoRelacionado(Equipamento equipamentoRelacionado) {
+        this.equipamentoRelacionado = equipamentoRelacionado;
+    }
 
-public void setTecnicoResponsavel(Tecnico tecnicoResponsavel) {
-    this.tecnicoResponsavel = tecnicoResponsavel;
-}
+    public Tecnico getTecnicoResponsavel() {
+        return tecnicoResponsavel;
+    }
 
-public LocalDateTime getDataAbertura() {
-    return dataAbertura;
-}
+    public void setTecnicoResponsavel(Tecnico tecnicoResponsavel) {
+        this.tecnicoResponsavel = tecnicoResponsavel;
+    }
 
-public void setDataAbertura(LocalDateTime dataAbertura) {
-    this.dataAbertura = dataAbertura;
-}
+    public LocalDateTime getDataAbertura() {
+        return dataAbertura;
+    }
 
-public LocalDateTime getDataEncerramento() {
-    return dataEncerramento;
-}
+    public void setDataAbertura(LocalDateTime dataAbertura) {
+        this.dataAbertura = dataAbertura;
+    }
 
-public void setDataEncerramento(LocalDateTime dataEncerramento) {
-    this.dataEncerramento = dataEncerramento;
-}
+    public LocalDateTime getDataEncerramento() {
+        return dataEncerramento;
+    }
 
-public String getTipoManutencao() {
-    return tipoManutencao;
-}
+    public void setDataEncerramento(LocalDateTime dataEncerramento) {
+        this.dataEncerramento = dataEncerramento;
+    }
 
-public void setTipoManutencao(String tipoManutencao) {
-    this.tipoManutencao = tipoManutencao;
-}
+    public String getTipoManutencao() {
+        return tipoManutencao;
+    }
 
-public String getDescricaoProblema() {
-    return descricaoProblema;
-}
+    public void setTipoManutencao(String tipoManutencao) {
+        this.tipoManutencao = tipoManutencao;
+    }
 
-public void setDescricaoProblema(String descricaoProblema) {
-    this.descricaoProblema = descricaoProblema;
-}
+    public String getDescricaoProblema() {
+        return descricaoProblema;
+    }
 
-public String getSituacao() {
-    return situacao;
-}
+    public void setDescricaoProblema(String descricaoProblema) {
+        this.descricaoProblema = descricaoProblema;
+    }
 
-public void setSituacao(String situacao) {
-    this.situacao = situacao;
-}
+    public String getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(String situacao) {
+        this.situacao = situacao;
+    }
 }

@@ -1,5 +1,7 @@
 package models;
 
+import java.time.LocalDateTime;
+
 public class Equipamento {
     private String codigo;
     private String nome;
@@ -7,11 +9,11 @@ public class Equipamento {
     private String fabricante;
     private String modelo;
     private String setor;
-    private String dataInstalacao;
+    private LocalDateTime dataInstalacao;
     private String status; // Operanco / Em manutenção / Inativo
     
     public Equipamento(String codigo, String nome, String categoria, String fabricante, String modelo, String setor,
-            String dataInstalacao, String status) {
+            LocalDateTime dataInstalacao, String status) {
         this.codigo = codigo;
         this.nome = nome;
         this.categoria = categoria;
@@ -20,6 +22,18 @@ public class Equipamento {
         this.setor = setor;
         this.dataInstalacao = dataInstalacao;
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Código: " + codigo
+        + "\nNome: " + nome
+        + "\nCategoria: " + categoria
+        + "\nFabricante: " + fabricante
+        + "\nModelo: " + modelo
+        + "\nSetor: " + setor
+        + "\nData instalação: " + dataInstalacao.toString()
+        + "\nStatus: " + status;
     }
 
     public String getCodigo() {
@@ -70,11 +84,11 @@ public class Equipamento {
         this.setor = setor;
     }
 
-    public String getDataInstalacao() {
+    public LocalDateTime getDataInstalacao() {
         return dataInstalacao;
     }
 
-    public void setDataInstalacao(String dataInstalacao) {
+    public void setDataInstalacao(LocalDateTime dataInstalacao) {
         this.dataInstalacao = dataInstalacao;
     }
 
