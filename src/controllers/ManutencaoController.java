@@ -138,17 +138,6 @@ public class ManutencaoController {
         equipamentoService.update(e);
     }
 
-    private Manutencao atualizarManutencao(Manutencao m) {
-        System.out.print("\nDigite a descrição (Enter para continuar): ");
-        String descricao = input.nextLine();
-
-        if(!descricao.isEmpty()) {
-            m.setDescricaoProblema(descricao);
-        }
-
-        return m;
-    }  
-
     private Manutencao alterarSituacao(Manutencao m) {
         if(m.getSituacao().equals("Aberta")) {
             m.setSituacao("Em andamento");

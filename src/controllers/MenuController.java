@@ -3,6 +3,9 @@ package controllers;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import repository.EquipamentoRepository;
+import repository.ManutencaoRepository;
+import repository.TecnicoRepository;
 import services.EquipamentoService;
 import services.ManutencaoService;
 import services.RelatorioService;
@@ -15,13 +18,20 @@ public class MenuController {
     private final EquipamentoController equipamentoController;
     private final TecnicoController tecnicoController;
     private final ManutencaoController manutencaoController;
-    
 
-    public MenuController(TecnicoService tecnicoService, ManutencaoService manutencaoService,
+    private final EquipamentoRepository equipamentoRepository;
+    private final TecnicoRepository tecnicoRepository;
+    private final ManutencaoRepository manutencaoRepository;
+
+    public MenuController(EquipamentoRepository equipamentoRepository,
+            TecnicoRepository tecnicoRepository, ManutencaoRepository manutencaoRepository, TecnicoService tecnicoService, ManutencaoService manutencaoService,
             EquipamentoService equipamentoService) {
         this.tecnicoController = new TecnicoController(tecnicoService);
         this.equipamentoController = new EquipamentoController(equipamentoService);
         this.manutencaoController = new ManutencaoController(manutencaoService, equipamentoService, tecnicoService);
+        this.equipamentoRepository = equipamentoRepository;
+        this.tecnicoRepository = tecnicoRepository;
+        this.manutencaoRepository = manutencaoRepository;
     }
 
     public void startMenu() {
@@ -51,7 +61,7 @@ public class MenuController {
                         manutencaoController.startMenu();
                         break;
                     case 4:
-                        //apresentar relatório
+                        relatorioService.apresentarRelatorio(manutencaoRepository, equipamentoRepository, tecnicoRepository);;
                         break;
                     case 0:
                         System.out.println("\nSaindo...");

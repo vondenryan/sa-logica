@@ -13,10 +13,10 @@ public class Main {
         TecnicoRepository tecnicoRepository = new TecnicoRepository();
 
         EquipamentoService equipamentoService = new EquipamentoService(equipamentoRepository);
-        ManutencaoService manutencaoService = new ManutencaoService(manutencaoRepository);
         TecnicoService tecnicoService = new TecnicoService(tecnicoRepository);
+        ManutencaoService manutencaoService = new ManutencaoService(tecnicoRepository, equipamentoRepository, manutencaoRepository);
         
-        MenuController menu = new MenuController(tecnicoService, manutencaoService, equipamentoService);
+        MenuController menu = new MenuController(equipamentoRepository, tecnicoRepository, manutencaoRepository, tecnicoService, manutencaoService, equipamentoService);
         menu.startMenu();
     }
 }

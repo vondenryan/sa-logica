@@ -13,11 +13,14 @@ import repository.ManutencaoRepository;
 import repository.TecnicoRepository;
 
 public class ManutencaoService {
-    private final TecnicoRepository tecnicoRepository = new TecnicoRepository();
-    private final EquipamentoRepository equipamentoRepository = new EquipamentoRepository();
+    private final TecnicoRepository tecnicoRepository;
+    private final EquipamentoRepository equipamentoRepository;
     private final ManutencaoRepository repository;
 
-    public ManutencaoService(ManutencaoRepository repository) {
+    public ManutencaoService(TecnicoRepository tecnicoRepository, EquipamentoRepository equipamentoRepository,
+            ManutencaoRepository repository) {
+        this.tecnicoRepository = tecnicoRepository;
+        this.equipamentoRepository = equipamentoRepository;
         this.repository = repository;
     }
 
