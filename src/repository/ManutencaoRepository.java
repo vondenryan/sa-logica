@@ -48,29 +48,33 @@ public class ManutencaoRepository {
 
     public boolean validarExclusaoEquipamento(Equipamento e) {
         for(Manutencao m : manutencoes) {
-            if(m.getEquipamentoRelacionado().getCodigo() != e.getCodigo()) {
+            if(!m.getEquipamentoRelacionado().getCodigo().equals(e.getCodigo())) {
                 continue;
             }
 
             String situacao = m.getSituacao();
             if("Aberta".equals(situacao) || "Em andamento".equals(situacao)) {
+                System.out.println("\nValidação falhou");
                 return false;
             }
         }
+        System.out.println("\nValidação passou");
         return true;
     }
 
     public boolean validarExclusaoTecnico(Tecnico t) {
         for(Manutencao m : manutencoes) {
-            if(m.getTecnicoResponsavel().getCodigo() != t.getCodigo()) {
+            if(!m.getTecnicoResponsavel().getCodigo().equals(t.getCodigo())) {
                 continue;
             }
 
             String situacao = m.getSituacao();
             if("Aberta".equals(situacao) || "Em andamento".equals(situacao)) {
+                System.out.println("\nValidação falhou");
                 return false;
             }
         }
+        System.out.println("\nValidação passou");
         return true;
     }
 }

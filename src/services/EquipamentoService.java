@@ -11,11 +11,12 @@ import repository.EquipamentoRepository;
 import repository.ManutencaoRepository;
 
 public class EquipamentoService {
-    private final ManutencaoRepository manRep = new ManutencaoRepository();
+    private final ManutencaoRepository manRep;
     private final EquipamentoRepository repository;
 
-    public EquipamentoService(EquipamentoRepository repository) {
+    public EquipamentoService(EquipamentoRepository repository, ManutencaoRepository manRep) {
         this.repository = repository;
+        this.manRep = manRep;
     }
 
     public void create(Equipamento equipamento) throws ObjetoIncompletoException, CodigoInvalidoException {
@@ -32,7 +33,7 @@ public class EquipamentoService {
 
     public void delete(String codigo) throws ListaVaziaException, CodigoInvalidoException, ManutencaoAbertaException {
         if(repository.listarTodos().isEmpty()) { throw new ListaVaziaException("Erro: lista vazia!"); }
-        if(!manRep.validarExclusaoEquipamento(repository.buscarPorCodigo(codigo))) { throw new ManutencaoAbertaException("Erro: equipamento relacionado a manutenção aberta!"); }
+        if(!manRep.validarExclusaoEquipamento(repository.buscarPorCodigo(codigo))) { throw new ManutencaoAbertaException("Erro: equipamento relacionado à manutenção aberta!"); }
         boolean result = repository.delete(codigo);
         if(!result) { throw new CodigoInvalidoException("Erro: código inválido!"); }
     }

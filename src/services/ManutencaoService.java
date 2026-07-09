@@ -73,7 +73,7 @@ public class ManutencaoService {
 
     public void validarUnicidade(Manutencao m) throws CodigoInvalidoException {
         for(Manutencao manutencao : repository.listarTodos()) {
-            if(m.getCodigo().endsWith(manutencao.getCodigo())) { throw new CodigoInvalidoException("Erro: código duplicado!"); }
+            if(m.getCodigo().equals(manutencao.getCodigo())) { throw new CodigoInvalidoException("Erro: código duplicado!"); }
         }
     }
 }

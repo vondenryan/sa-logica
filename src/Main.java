@@ -12,8 +12,8 @@ public class Main {
         ManutencaoRepository manutencaoRepository = new ManutencaoRepository();
         TecnicoRepository tecnicoRepository = new TecnicoRepository();
 
-        EquipamentoService equipamentoService = new EquipamentoService(equipamentoRepository);
-        TecnicoService tecnicoService = new TecnicoService(tecnicoRepository);
+        EquipamentoService equipamentoService = new EquipamentoService(equipamentoRepository, manutencaoRepository);
+        TecnicoService tecnicoService = new TecnicoService(tecnicoRepository, manutencaoRepository);
         ManutencaoService manutencaoService = new ManutencaoService(tecnicoRepository, equipamentoRepository, manutencaoRepository);
         
         MenuController menu = new MenuController(equipamentoRepository, tecnicoRepository, manutencaoRepository, tecnicoService, manutencaoService, equipamentoService);

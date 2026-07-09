@@ -8,9 +8,12 @@ import java.util.Scanner;
 import javax.management.InvalidAttributeValueException;
 
 import exceptions.CodigoInvalidoException;
+import exceptions.EquipamentoInvalidoException;
+import exceptions.ManutencaoFinalizadaException;
 import exceptions.ObjetoIncompletoException;
 import models.Equipamento;
 import models.Manutencao;
+import models.Tecnico;
 import services.EquipamentoService;
 import services.ManutencaoService;
 import services.TecnicoService;
@@ -96,7 +99,7 @@ public class ManutencaoController {
         }
     }
 
-    private Manutencao registrarManutencao() throws InvalidAttributeValueException, CodigoInvalidoException {
+    private Manutencao registrarManutencao() throws InvalidAttributeValueException, CodigoInvalidoException, EquipamentoInvalidoException {
         //pegando valores normais
         System.out.print("\nDigite o código: ");
         String codigo = input.nextLine();
@@ -128,8 +131,13 @@ public class ManutencaoController {
             dateTime = LocalDateTime.parse(dataInstalacao, formatter);
         }
 
+        Equipamento equipamento = equipamentoService.buscarPorCodigo(codEquipamento);
+        Tecnico tecnico = tecnicoService.buscarPorCodigo(codTecnico);
+
+        if(equipamento.getStatus().equals("Em manutenção")) { throw new EquipamentoInvalidoException("Erro: equipamento está em manutenção!"); }
+
         //retornando objeto
-        return new Manutencao(codigo, equipamentoService.buscarPorCodigo(codEquipamento), tecnicoService.buscarPorCodigo(codTecnico), dateTime, tipoManutencao, descricao, "Aberta");
+        return new Manutencao(codigo, equipamento, tecnico, dateTime, tipoManutencao, descricao, "Aberta");
     }
 
     private void alterarStatus(Manutencao m) throws CodigoInvalidoException, ObjetoIncompletoException {
@@ -148,7 +156,9 @@ public class ManutencaoController {
         return m;
     }
 
-    private Manutencao finalizarManutencao(Manutencao m) throws CodigoInvalidoException, ObjetoIncompletoException {
+    private Manutencao finalizarManutencao(Manutencao m) throws CodigoInvalidoException, ObjetoIncompletoException, ManutencaoFinalizadaException {
+        if(m.getSituacao().equals("Finalizada")) { throw new ManutencaoFinalizadaException("Erro: manutenção já foi finalizada!"); }
+
         Equipamento e = equipamentoService.buscarPorCodigo(m.getEquipamentoRelacionado().getCodigo());
         e.setStatus("Operando");
         equipamentoService.update(e);

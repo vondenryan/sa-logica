@@ -12,11 +12,12 @@ import repository.ManutencaoRepository;
 import repository.TecnicoRepository;
 
 public class TecnicoService {
-    private final ManutencaoRepository manRep = new ManutencaoRepository();
+    private final ManutencaoRepository manRep;
     private final TecnicoRepository repository;
 
-    public TecnicoService(TecnicoRepository repository) {
+    public TecnicoService(TecnicoRepository repository, ManutencaoRepository manRep) {
         this.repository = repository;
+        this.manRep = manRep;
     }
 
     public void create(Tecnico tecnico) throws ObjetoIncompletoException, MatriculaInvalidaException, CodigoInvalidoException {
@@ -33,7 +34,7 @@ public class TecnicoService {
 
     public void delete(String codigo) throws ListaVaziaException, CodigoInvalidoException, ManutencaoAbertaException {
         if(repository.listarTodos().isEmpty()) { throw new ListaVaziaException("Erro: lista vazia!"); }
-        if(!manRep.validarExclusaoTecnico(repository.buscarPorCodigo(codigo))) { throw new ManutencaoAbertaException("Erro: técnico relacionado a manutenção aberta!"); }
+        if(!manRep.validarExclusaoTecnico(repository.buscarPorCodigo(codigo))) { throw new ManutencaoAbertaException("Erro: técnico relacionado à manutenção aberta!"); }
         boolean result = repository.delete(codigo);
         if(!result) { throw new CodigoInvalidoException("Erro: código inválido!"); }
     }
