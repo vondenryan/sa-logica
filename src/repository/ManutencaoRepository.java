@@ -54,11 +54,9 @@ public class ManutencaoRepository {
 
             String situacao = m.getSituacao();
             if("Aberta".equals(situacao) || "Em andamento".equals(situacao)) {
-                System.out.println("\nValidação falhou");
                 return false;
             }
         }
-        System.out.println("\nValidação passou");
         return true;
     }
 
@@ -70,11 +68,9 @@ public class ManutencaoRepository {
 
             String situacao = m.getSituacao();
             if("Aberta".equals(situacao) || "Em andamento".equals(situacao)) {
-                System.out.println("\nValidação falhou");
                 return false;
             }
         }
-        System.out.println("\nValidação passou");
         return true;
     }
 }
